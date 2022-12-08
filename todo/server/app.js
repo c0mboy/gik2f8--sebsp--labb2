@@ -52,4 +52,27 @@ app.post("/task", async (req, res) => {
     res.status(500).send({ error: error.stack });
   }
 });
+
+app.delete("/task/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const listBuffer = await fs.readFile("./tasks.json"); // läser upp dom befintliga filerna
+    const currentTasks = JSON.parse(listBuffer);
+
+    if (currentTasks.length > 0) {
+      //Om det inte finns filer
+      await fs.writeFile(
+        "./tasks.json",
+        JSON.stringify(currentTasks.filter((task) => task.id != id))
+      );
+      res.send({ message: `Uppgift med id ${id} togs bort.` });
+    } else {
+      res.status(404).send({ error: "Ingen uppgift att ta bort" });
+      //Annars skickar vi status 500 och string
+    }
+  } catch (error) {
+    res.status(500).send({ error: error.stack });
+  }
+});
+
 app.listen(PORT, () => console.log("Server running on http://localhost:5000"));
