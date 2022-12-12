@@ -14,6 +14,7 @@ todoForm.addEventListener("submit", onSubmit);
 let titleValid = true;
 let descriptionValid = true;
 let dueDateValid = true;
+const api = new Api("localhost:5000/tasks"); //grund url till vårt api
 
 function validateField(field) {
   //Tar imott e = eventet som alltid skickas aoutmatiskt från "input" på todofrom.title
@@ -64,5 +65,16 @@ function onSubmit(e) {
     saveTask();
   }
 
-  function saveTask() {}
+  function saveTask() {
+    const task = {
+      //plockar ut det som ska sparas ner
+      //Hämtat upp värdet från alla fält
+      title: todoForm.title.value, //Det som står i title fältet dess value säter i title task formatet
+      description: todoForm.description.value,
+      dueDate: todoForm.dueDate.value,
+      completed: false,
+    };
+
+    api.create();
+  }
 }
