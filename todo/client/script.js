@@ -13,7 +13,7 @@ todoForm.addEventListener("submit", onSubmit);
 
 let titleValid = true;
 let descriptionValid = true;
-let dueDateValid = false;
+let dueDateValid = true;
 
 function validateField(field) {
   //Tar imott e = eventet som alltid skickas aoutmatiskt från "input" på todofrom.title
@@ -57,4 +57,12 @@ function validateField(field) {
 
 function onSubmit(e) {
   e.preventDefault(); //förhindrar att den skicka med formuläret
+
+  if (titleValid && descriptionValid && dueDateValid) {
+    //Truti enbär att alla värderna går in om dom är sanna enligt let variablarna
+    console.log("Submit");
+    saveTask();
+  }
+
+  function saveTask() {}
 }
