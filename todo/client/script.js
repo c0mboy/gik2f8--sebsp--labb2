@@ -84,6 +84,11 @@ function onSubmit(e) {
   }
 }
 
+/* Ta emot ny task och lägga till den i listan */
 function render() {
   console.log("rendering");
+  api.getAll().then((tasks) => {
+    console.log(tasks);
+    /* Generera lista av uppgifter */
+  });
 }

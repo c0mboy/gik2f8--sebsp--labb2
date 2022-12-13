@@ -19,15 +19,19 @@ class Api {
       },
     });
 
-    console.log(request);
-
     return fetch(request)
       .then((result) => result.json()) // för att göra om resultatet till JSON
       .then((data) => data) // Skicka ut data  ur hela then kedjan
       .catch((err) => console.log(err)); //Ifall det blir fel för konsol
   }
 
-  getAll() {}
+  //Hämtar all data från urlen skapar ett request objekt med alla inställningar. methoden är GET
+  getAll() {
+    return fetch(this.url)
+      .then((result) => result.json())
+      .then((data) => data)
+      .catch((err) => console.log(err));
+  }
 
   remove() {}
 }

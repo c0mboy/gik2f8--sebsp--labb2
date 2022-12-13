@@ -16,7 +16,7 @@ app
     next();
   });
 
-app.get("/task", async (req, res) => {
+app.get("/tasks", async (req, res) => {
   try {
     const tasks = await fs.readFile("./tasks.json");
     res.send(JSON.parse(tasks));
