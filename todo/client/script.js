@@ -14,7 +14,7 @@ todoForm.addEventListener("submit", onSubmit);
 let titleValid = true;
 let descriptionValid = true;
 let dueDateValid = true;
-const api = new Api("localhost:5000/tasks"); //grund url till vårt api
+const api = new Api("http://localhost:5000/tasks"); //grund url till vårt api
 
 function validateField(field) {
   //Tar imott e = eventet som alltid skickas aoutmatiskt från "input" på todofrom.title
@@ -75,6 +75,15 @@ function onSubmit(e) {
       completed: false,
     };
 
-    api.create(task);
+    //skickar tasks till api creat som heter data sedan gör om det till JSON sträng. then för att ta emot return från api som är ett promise
+    api.create(task).then((task) => {
+      if (task) {
+        render();
+      }
+    });
   }
+}
+
+function render() {
+  console.log("rendering");
 }
