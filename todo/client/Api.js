@@ -6,7 +6,7 @@ class Api {
   }
 
   create(data) {
-    console.log("Create");
+    console.log(data);
   }
 
   getAll() {}

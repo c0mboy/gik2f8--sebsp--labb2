@@ -75,6 +75,6 @@ function onSubmit(e) {
       completed: false,
     };
 
-    api.create();
+    api.create(task);
   }
 }
