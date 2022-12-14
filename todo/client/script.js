@@ -101,7 +101,12 @@ function renderList() {
   console.log("rendering");
   api.getAll().then((tasks) => {
     /* Generera lista av uppgifter */
-    /*  anonomys  :D */
+    //__________
+
+    // tasks.sort((first, second) => first.dueDate - second.dueDate);
+    // promise.then()
+    // console.log.then(users);
+    //___________
     todoListElement.innerHTML = ""; //tar bort html i Ul börja från 0
     if (tasks && tasks.length > 0) {
       tasks.forEach((task) => {
@@ -121,7 +126,7 @@ function renderTask({ id, title, description, dueDate, completed }) {
       <h3 class="mb-3 flex-1 text-l font-bold text-purple-500 uppercase">${title}</h3>
       <div>
        <span `;
-  completed && (html += `class="text-green-900"`);
+  completed && (html += `class="text-green-900 font-semibold"`);
   html += `>${dueDate}</span>
        <input 
          value="${id}"
@@ -131,7 +136,7 @@ function renderTask({ id, title, description, dueDate, completed }) {
   completed && (html += ` checked`);
   html += `>
          <label `;
-  completed && (html += `class="text-green-900"`);
+  completed && (html += `class="text-green-900 font-semibold"`);
   html += `>Finished</label>           
        <button onclick="deleteTask(${id})" class="inline-block text-xs rounded-md bg-pink-400 hover:bg-pink-500 py-1 px-3 rounded-md ml-2">Delete</button>
        </div>
