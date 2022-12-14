@@ -75,4 +75,16 @@ app.delete("/tasks/:id", async (req, res) => {
   }
 });
 
+//Uppdate Working title
+// app.uppdate("/tasks", async (req, res) => {
+//   try {
+//     const req = new XMLHttpRequest();
+//     req.open("PUT", "/tasks/" + data.id); // or request.open("PATCH", "/tasks/" + data.id);
+//     req.setRequestHeader("Content-Type", "application/json");
+//     req.send(JSON.stringify(data));
+//   } catch (error) {
+//     res.status(500).send({ error });
+//   }
+// });
+
 app.listen(PORT, () => console.log("Server running on http://localhost:5000"));

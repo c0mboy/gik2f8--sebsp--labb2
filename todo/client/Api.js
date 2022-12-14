@@ -44,4 +44,15 @@ class Api {
       .then((result) => result)
       .catch((err) => console.log(err));
   }
+
+  // uppdate = PUT working title
+  uppdate(task) {
+    console.log("Uppdateing task becose its done whit new style", task);
+
+    // const data = {
+    //   id: task.id,
+    //   name: task.textContent,
+    //   checked: task.classList.contains("checked-task"),
+    // };
+  }
 }
