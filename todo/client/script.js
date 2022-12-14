@@ -101,6 +101,7 @@ function renderList() {
   console.log("rendering");
   api.getAll().then((tasks) => {
     /* Generera lista av uppgifter */
+    /*  anonomys  :D */
     todoListElement.innerHTML = ""; //tar bort html i Ul börja från 0
     if (tasks && tasks.length > 0) {
       tasks.forEach((task) => {
@@ -111,19 +112,27 @@ function renderList() {
 }
 
 /* HTML */
-function renderTask({ id, title, description, dueDate }) {
+function renderTask({ id, title, description, dueDate, completed }) {
   //Kommer att plocka ut just de egenskaper man vill ha se mina val
   //Html CODE
   let html = `
     <li class="select-none mt-2 py-2 border-b border-sky-300">
      <div class="flex items-center">
       <h3 class="mb-3 flex-1 text-l font-bold text-purple-500 uppercase">${title}</h3>
-      <div id="${id}">
-       <span>${dueDate}</span>
+      <div>
+       <span `;
+  completed && (html += `class="text-green-900"`);
+  html += `>${dueDate}</span>
        <input 
-         type="checkbox" 
-         onchange="renderTaskFinished(this)"         
-         class="inline-block text-xs rounded-md bg-pink-400 hover:bg-pink-500 py-1 px-3 rounded-md ml-2"><label>Finished</label>           
+         value="${id}"
+         type="checkbox"
+         onchange="uppdateTask(this)"         
+         class="inline-block text-xs rounded-md bg-pink-400 hover:bg-pink-500 py-1 px-3 rounded-md ml-2" `;
+  completed && (html += ` checked`);
+  html += `>
+         <label `;
+  completed && (html += `class="text-green-900"`);
+  html += `>Finished</label>           
        <button onclick="deleteTask(${id})" class="inline-block text-xs rounded-md bg-pink-400 hover:bg-pink-500 py-1 px-3 rounded-md ml-2">Delete</button>
        </div>
      </div>`;
@@ -145,28 +154,9 @@ function deleteTask(id) {
   });
 }
 
-function renderTaskFinished(checkbox) {
-  const task = checkbox.parentNode; // hämtar ut förälden av checkbox för att ändra style vid kryss
-  if (checkbox.checked) {
-    task.classList.add("checked-task", "text-green-900"); // När jag checkar i boxen, adderar jag en class och tailwind style
-  } else {
-    task.classList.remove("checked-task", "text-green-900"); // om den inte är ikryssad tar jag bort den tar jag bort classen och tailwind style
-  }
-
-  saveTaskFinsishedChange(task);
-}
-
-function saveTaskFinsishedChange(task) {
-  //object för att spara den uppdaterade datan vid checkbox
-  console.log("here comes the change", task);
-  const data = {
-    id: task.id, // adderar ett id i diven som följer med api/server/filen?
-    //description: task.textContent, behöver inte skicka med det vi får se när servern är igång
-    checked: task.classList.contains("checked-task"),
-  };
-  console.log("here comes the change", data);
-
-  api.uppdate(task).then((result) => {
+function uppdateTask(checkbox) {
+  console.log(checkbox.value);
+  api.uppdate(checkbox.value).then((result) => {
     renderList(); //visar All uppgifter direkt vid laddning av sidan alltså en uppdate av sidan
   });
 }

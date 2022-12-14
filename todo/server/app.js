@@ -75,16 +75,35 @@ app.delete("/tasks/:id", async (req, res) => {
   }
 });
 
-//Uppdate Working title
-// app.uppdate("/tasks", async (req, res) => {
-//   try {
-//     const req = new XMLHttpRequest();
-//     req.open("PUT", "/tasks/" + data.id); // or request.open("PATCH", "/tasks/" + data.id);
-//     req.setRequestHeader("Content-Type", "application/json");
-//     req.send(JSON.stringify(data));
-//   } catch (error) {
-//     res.status(500).send({ error });
-//   }
-// });
+// Uppdate Working title
+app.put("/tasks/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    console.log(req.params.id);
+
+    const listBuffer = await fs.readFile("./tasks.json"); // läser upp dom befintliga filerna
+    const currentTasks = JSON.parse(listBuffer);
+
+    if (currentTasks.length > 0) {
+      //leta på tasken som har det id för en uppdatering
+      currentTasks.forEach((task) => {
+        if (task.id == id) {
+          if (task.completed) {
+            task.completed = false;
+          } else {
+            task.completed = true;
+          }
+        }
+      });
+      await fs.writeFile("./tasks.json", JSON.stringify(currentTasks));
+      res.send({ message: `Uppgift med id ${id} ändrades.` });
+    } else {
+      res.status(404).send({ error: "Inga uppgift att ta ändra" });
+    }
+  } catch (error) {
+    res.status(500).send({ error });
+    console.log(error);
+  }
+});
 
 app.listen(PORT, () => console.log("Server running on http://localhost:5000"));

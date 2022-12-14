@@ -46,13 +46,18 @@ class Api {
   }
 
   // uppdate = PUT working title
-  uppdate(task) {
-    console.log("Uppdateing task becose its done whit new style", task);
+  uppdate(uppdateID) {
+    const JSONData = JSON.stringify({ id: uppdateID });
+    console.log("Uppdateing task id:", JSONData);
 
-    // const data = {
-    //   id: task.id,
-    //   name: task.textContent,
-    //   checked: task.classList.contains("checked-task"),
-    // };
+    return fetch(`${this.url}/${uppdateID}`, {
+      method: "PUT", //put
+      body: JSONData, // Innehållet faktista data
+      headers: {
+        "content-type": "application/json", //berättar för servern att det kommer JSON datai body
+      },
+    })
+      .then((result) => result)
+      .catch((err) => console.log(err));
   }
 }
