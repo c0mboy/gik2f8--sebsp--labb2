@@ -18,6 +18,7 @@ let descriptionValid = true;
 let dueDateValid = true;
 const api = new Api("http://localhost:5000/tasks"); //grund url till vårt api
 
+/* */
 function validateField(field) {
   //Tar imott e = eventet som alltid skickas aoutmatiskt från "input" på todofrom.title
   const { name, value } = field; //hämtar ut dom egenskaperna ur just field objectet
@@ -64,6 +65,7 @@ function validateField(field) {
   field.previousElementSibling.classList.remove("hidden");
 }
 
+/*Function för att SKAPA(C)  */
 function onSubmit(e) {
   e.preventDefault(); //förhindrar att den skicka med formuläret
 
@@ -72,34 +74,34 @@ function onSubmit(e) {
     console.log("Submit");
     saveTask();
   }
-
-  function saveTask() {
-    const task = {
-      //plockar ut det som ska sparas ner
-      //Hämtat upp värdet från alla fält
-      title: todoForm.title.value, //Det som står i title fältet dess value säter i title task formatet
-      description: todoForm.description.value,
-      dueDate: todoForm.dueDate.value,
-      completed: false,
-    };
-
-    //skickar tasks till api creat som heter data sedan gör om det till JSON sträng. then för att ta emot return från api som är ett promise
-    api.create(task).then((task) => {
-      if (task) {
-        renderList();
-      }
-    });
-  }
 }
 
-/* Ta emot ny task och lägga till den i listan */
+/* */
+function saveTask() {
+  const task = {
+    //plockar ut det som ska sparas ner
+    //Hämtat upp värdet från alla fält
+    title: todoForm.title.value, //Det som står i title fältet dess value säter i title task formatet
+    description: todoForm.description.value,
+    dueDate: todoForm.dueDate.value,
+    completed: false,
+  };
+
+  //skickar tasks till api creat som heter data sedan gör om det till JSON sträng. then för att ta emot return från api som är ett promise
+  api.create(task).then((task) => {
+    if (task) {
+      renderList();
+    }
+  });
+}
+
+/* Ta emot ny task och lägga till den i listan  function för att LÄSA(R)*/
 function renderList() {
   console.log("rendering");
   api.getAll().then((tasks) => {
     /* Generera lista av uppgifter */
+    todoListElement.innerHTML = ""; //tar bort html i Ul börja från 0
     if (tasks && tasks.length > 0) {
-      todoListElement.innerHTML = ""; //tar bort html i Ul börja från 0
-
       tasks.forEach((task) => {
         todoListElement.insertAdjacentHTML("beforeend", renderTask(task)); //skall lägga in html i slutet från renderTask()
       });
@@ -107,6 +109,7 @@ function renderList() {
   });
 }
 
+/* HTML */
 function renderTask({ id, title, description, dueDate }) {
   //Kommer att plocka ut just de egenskaper man vill ha se mina val
   //Html CODE
@@ -116,7 +119,7 @@ function renderTask({ id, title, description, dueDate }) {
       <h3 class="mb-3 flex-1 text-l font-bold text-purple-500 uppercase">${title}</h3>
       <div>
        <span>${dueDate}</span>
-       <button class="inline-block text-xs rounded-md bg-pink-400 hover:bg-pink-500 py-1 px-3 rounded-md ml-2">Delete</button>
+       <button onclick="deleteTask(${id})" class="inline-block text-xs rounded-md bg-pink-400 hover:bg-pink-500 py-1 px-3 rounded-md ml-2">Delete</button>
       </div>
      </div>`;
   // Om descriptons skriv med kommer det att visas eller inte
@@ -130,4 +133,11 @@ function renderTask({ id, title, description, dueDate }) {
   return html; //returnerar ut html koden
 }
 
-renderList(); //visar All uppgifter direkt vid laddning av sidan
+function deleteTask(id) {
+  console.log(id);
+  api.remove(id).then((result) => {
+    renderList(); //visar All uppgifter direkt vid laddning av sidan alltså en uppdate av sidan
+  });
+}
+
+renderList(); //visar All uppgifter direkt vid laddning av sidan alltså en uppdate av sidan

@@ -6,7 +6,7 @@ class Api {
   }
 
   //starta server  cd todo/server & node app.js
-  // Create = Post
+  // Create = POST
   create(data) {
     const JSONData = JSON.stringify(data);
     console.log(`Sending ${JSONData} to ${this.url}`);
@@ -26,6 +26,7 @@ class Api {
   }
 
   //Hämtar all data från urlen skapar ett request objekt med alla inställningar. methoden är GET
+  //Read = GET
   getAll() {
     return fetch(this.url)
       .then((result) => result.json())
@@ -33,5 +34,14 @@ class Api {
       .catch((err) => console.log(err));
   }
 
-  remove() {}
+  // delete = DELETE
+  remove(id) {
+    console.log(`Removing task whit id:${id}`);
+
+    return fetch(`${this.url}/${id}`, {
+      method: "DELETE",
+    })
+      .then((result) => result)
+      .catch((err) => console.log(err));
+  }
 }
