@@ -72,7 +72,6 @@ function onSubmit(e) {
 
   if (titleValid && descriptionValid && dueDateValid) {
     //Truti enbär att alla värderna går in om dom är sanna enligt let variablarna
-    console.log("Submit");
     saveTask();
   }
 }
@@ -98,18 +97,16 @@ function saveTask() {
 
 /* Ta emot ny task och lägga till den i listan  function för att LÄSA(R)*/
 function renderList() {
-  console.log("rendering");
   api.getAll().then((tasks) => {
-    /* Generera lista av uppgifter */
-    //__________
-
-    // tasks.sort((first, second) => first.dueDate - second.dueDate);
-    // promise.then()
-    // console.log.then(users);
-    //___________
+    tasks.sort((first, second) => first.dueDate - second.dueDate);
     todoListElement.innerHTML = ""; //tar bort html i Ul börja från 0
     if (tasks && tasks.length > 0) {
+      tasks.sort(
+        // sorterar efter den datum som måste göra ASP
+        (a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+      );
       tasks.forEach((task) => {
+        /*ska in vid sortering */
         todoListElement.insertAdjacentHTML("beforeend", renderTask(task)); //skall lägga in html i slutet från renderTask()
       });
     }
@@ -120,6 +117,7 @@ function renderList() {
 function renderTask({ id, title, description, dueDate, completed }) {
   //Kommer att plocka ut just de egenskaper man vill ha se mina val
   //Html CODE
+
   let html = `
     <li class="select-none mt-2 py-2 border-b border-sky-300">
      <div class="flex items-center">
@@ -153,17 +151,19 @@ function renderTask({ id, title, description, dueDate, completed }) {
 }
 
 function deleteTask(id) {
-  console.log(id);
   api.remove(id).then((result) => {
     renderList(); //visar All uppgifter direkt vid laddning av sidan alltså en uppdate av sidan
   });
 }
 
 function uppdateTask(checkbox) {
-  console.log(checkbox.value);
   api.uppdate(checkbox.value).then((result) => {
     renderList(); //visar All uppgifter direkt vid laddning av sidan alltså en uppdate av sidan
   });
+}
+
+function compareTimes(a, b) {
+  return a.time - b.time;
 }
 
 renderList(); //visar All uppgifter direkt vid laddning av sidan alltså en uppdate av sidan

@@ -48,7 +48,7 @@ class Api {
   // uppdate = PUT working title
   uppdate(uppdateID) {
     const JSONData = JSON.stringify({ id: uppdateID });
-    console.log("Uppdateing task id:", JSONData);
+    console.log("Uppdateing task", JSONData);
 
     return fetch(`${this.url}/${uppdateID}`, {
       method: "PUT", //put
